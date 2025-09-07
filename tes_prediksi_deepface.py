@@ -40,11 +40,11 @@ def merge_with_suffix(dict1, dict2):
 def analysis(file_img, label):
     try:
     
-        image_path_before = f'FINAL/5_dataset_affectnet_rafdb_seleksi_wajah_miring_diatas_03/{file_img}'
-        image_path_after = f'FINAL/13_dataset_affectnet_rafdb_seleksi_wajah_miring_diatas_03_frontal/{file_img}'
-        
-        #image_path_before = f'FINAL/5_dataset_affectnet_rafdb_seleksi_wajah_miring/{file_img}'
-        #image_path_after = f'FINAL/11_dataset_affectnet_rafdb_seleksi_wajah_miring_frontal/{file_img}'
+        #image_path_before = f'UJI/2_dataset_affectnet_rafdb_seleksi_wajah_lurus_hand_sintesis/{file_img}'
+        #image_path_after = f'UJI/4_dataset_affectnet_rafdb_seleksi_wajah_lurus_hand_sintesis_frontal/{file_img}'
+       
+        image_path_before = f'UJI/3_dataset_affectnet_rafdb_seleksi_wajah_miring/{file_img}'
+        image_path_after = f'UJI/5_dataset_affectnet_rafdb_seleksi_wajah_miring_frontal/{file_img}'
 
         file = {"file" : file_img, "gt": label}
         analysis_before = analisis_emo_deepface(image_path_before)
@@ -56,10 +56,14 @@ def analysis(file_img, label):
         return None
 
 
-#dataset_path = "FINAL/11_dataset_affectnet_rafdb_seleksi_wajah_miring_frontal"
-dataset_path = "FINAL/13_dataset_affectnet_rafdb_seleksi_wajah_miring_diatas_03_frontal"
+#dataset_path = "UJI/4_dataset_affectnet_rafdb_seleksi_wajah_lurus_hand_sintesis_frontal/"
+dataset_path = "UJI/5_dataset_affectnet_rafdb_seleksi_wajah_miring_frontal/"
+
 label_results = []
-max_images_per_label = 150
+
+#max_images_per_label = 222 #tangan sintesis
+max_images_per_label = 72 #miring
+
 for label in os.listdir(dataset_path):
     label_path = os.path.join(dataset_path, label)
     if os.path.isdir(label_path):
@@ -74,15 +78,16 @@ for label in os.listdir(dataset_path):
                     result = analysis(image_, label)
                     if result is not None:
                         #print(result)
+                        image_count += 1
                         label_results.append(result)
                     else:
                         print("Gagal proses gambar")
-                    image_count += 1
                 else:
                     break 
         
 
 df = pd.DataFrame(label_results)
 
-df.to_csv('analisis_frontal_miring_diatas_30_deepface.csv', index=False)
+#df.to_csv('analisis_fix/analisis_frontal_hand_deepface.csv', index=False)
+df.to_csv('analisis_fix/analisis_frontal_miring_deepface.csv', index=False)
 print(df)
